@@ -41,24 +41,55 @@ class NumberDisplay():
         reverse_polish_notation = []
         operators = []
         higher_priority = False
+        new_value = False
 
-        for character in self.characters:
-            if character not in symbols:
-                reverse_polish_notation.append(character)
+        index = 0
+        while index < len(self.characters):
+            if self.characters[index] not in symbols:
+                if len(reverse_polish_notation) > 0 and reverse_polish_notation[-1] not in symbols and new_value == False:
+                    reverse_polish_notation[-1] += self.characters[index]
+                else:
+                    reverse_polish_notation.append(self.characters[index])
+                print(reverse_polish_notation)
                 if higher_priority == True:
                     reverse_polish_notation.append(operators[-1])
                     operators.remove(operators[-1])
                     higher_priority = False
             else:
-                if character == '/' or character == 'x':
-                    operators.append(character)
+                if self.characters[index] == '/' or self.characters[index] == 'x':
+                    operators.append(self.characters[index])
                     higher_priority = True
-                elif character == '+' or character == '-':
+                elif self.characters[index] == '+' or self.characters[index] == '-':
                     if len(operators) == 0:
-                        operators.append(character)
+                        operators.append(self.characters[index])
                     else:
                         reverse_polish_notation.append(operators.pop())
-                        operators.append(character)
+                        operators.append(self.characters[index])
+                new_value = True
+            index += 1
+
+        print(self.characters)
+        #for character in self.characters:
+        #    if character not in symbols:
+        #        if len(reverse_polish_notation) > 0 and reverse_polish_notation[-1] not in symbols:
+        #            reverse_polish_notation[-1] += character
+        #        else:
+        #            reverse_polish_notation.append(character)
+        #        print(reverse_polish_notation)
+        #        if higher_priority == True:
+        #            reverse_polish_notation.append(operators[-1])
+        #            operators.remove(operators[-1])
+        #            higher_priority = False
+        #    else:
+        #        if character == '/' or character == 'x':
+        #            operators.append(character)
+        #            higher_priority = True
+        #        elif character == '+' or character == '-':
+        #            if len(operators) == 0:
+        #                operators.append(character)
+        #            else:
+        #                reverse_polish_notation.append(operators.pop())
+        #                operators.append(character)
 
         if len(operators) != 0:
             reverse_polish_notation.append(operators[0])
@@ -102,7 +133,7 @@ def main():
 
     button_colour = (15, 15, 15)
     buttons = []
-    index = 1
+    index = 0
 
     number_display = NumberDisplay([0,0], int(screen_size[0]), int(screen_size[1]*0.2), button_colour)
 
@@ -149,5 +180,6 @@ def main():
             if event.type == pygame.QUIT:
                 break
 
-main()
+if __name__ == "__main__":
+    main()
 
